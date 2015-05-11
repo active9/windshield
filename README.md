@@ -17,6 +17,12 @@ Windshield provides a real-time "Virtual Windshield" for video encoding, transco
 npm install windshield -g
 ```
 
+##Running
+```bash
+windshield
+```
+Windshield is easy to start. Just globally install the Windshield package then run the command windshield to launch the server.
+
 ##USING
 
 Windshield is used as a stand-alone application. Now that you have Windshield installed you can visit http://localhost.rocks/ . Windshield has the following routes and features:
