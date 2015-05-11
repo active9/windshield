@@ -1,0 +1,41 @@
+{
+  "name": "windshield",
+  "version": "0.0.1",
+  "description": "Real-Time Transcoder & Streaming Server",
+  "main": "server.js",
+  "dependencies": {
+    "express": "*",
+    "request": "*",
+    "fluent-ffmpeg": "*"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/active9/windshield"
+  },
+  "keywords": [
+    "windshield",
+    "real",
+    "time",
+    "audio",
+    "video",
+    "transcoder",
+    "transcode",
+    "ffmpeg",
+    "stream",
+    "pipe",
+    "proxy",
+    "encode",
+    "decode"
+  ],
+  "author": "Active 9 LLC.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/active9/windshield/issues"
+  },
+  "homepage": "https://github.com/active9/windshield"
+}

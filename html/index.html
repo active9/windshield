@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>
+	Windshield
+</title>
+</head>
+<body>
+<h1>Windshield</h1>
+<img src="windshield.png" />
+<p>Real-Time Transcoder & Streaming Server</p>
+
+<h2>USING</h2>
+<p>Windshield runs on tcp port 40. Open localhost.rocks:40 to view your running instance of windshield.</p>
+
+<h2>SECURITY</h2>
+<p>Windshield does not provide any security mechanisms to secure the data channel during video streams. In order to have a secured data channel you would need to fork the windshield repo from github and establish your own security measures.</p>
+
+<h2>Introduction</h2>
+<p>Windshield provides a real-time "Virtual Windshield" for video encoding, transcoding, streaming, & piping.  It runs as a tcp/ip server on port 40. Requests passed through Windshield output as an mp4 and stream in real-time (where available). Much like a real windshield that you can see through this software provides a "Virtual Windshield" that can consume source videos in real-time pending cpu resources.</p>
+
+<h2>Installing</h2>
+<code>
+npm install windshield -g
+</code>
+
+<h2>USING</h2>
+
+Windshield is used as a stand-alone application. Now that you have Windshield installed you can visit http://localhost.rocks/ . Windshield has the following routes and features:
+<br /><br />
+<b>/videos/:filename</b><br />
+<code>
+http://localhost.rocks:40/videos/test.avi
+</code><br />
+This will pass test.avi from the supplied videos folder via a tcp/ip octet-stream.
+<br /><br />
+<b>/transcode/:kbps/:filename/:outfile</b><br />
+<code>
+http://localhost.rocks:40/transcode/700/test.avi/test.mp4
+</code><br />
+This will transcode test.avi and pipe it to test.mp4 in the background without sending any stream data through the browser.
+<br /><br />
+<b>/network/:url</b><br />
+<code>
+http://localhost.rocks:40/network/http://somevideodomain.com/video.mp4
+</code><br />
+This will proxy and pipe the video from the remote location directly for streaming.
+<br /><br />
+<b>/livestream/:kbps/:url</b><br />
+<code>
+http://localhost.rocks:40/livestream/1400/http://somevideodomain.com/video.mp4
+</code><br />
+This will proxy, transcode, & pipe the video from the remote location for real-time variable streaming.
+<br /><br />
+<b>/live/:kbps/:filename</b><br />
+<code>
+http://localhost.rocks:40/live/1400/test.avi
+</code><br />
+This will transcode test.avi and pipe it to test.mp4 for real-time variable streaming.
+<br /><br />
+<b>/stream/:filename</b><br />
+<code>
+http://localhost.rocks:40/stream/test.avi
+</code><br />
+This will input pipe test.avi for direct output streaming with no transcoding.
+<br /><br />
+<h2>CONTRIBUTING</h2>
+
+We encourage forking. Feel free to fork & pull your new additions, or bug fixes.
+
+<h2>LICENSE</h2>
+MIT
+
+
+</body>
+</html>
