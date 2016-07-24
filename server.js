@@ -6,11 +6,12 @@
 var fs = require('fs');
 var path = require('path');
 var http = require('http');
-var crypto = require("crypto");
+var crypto = require('crypto');
 var express = require('express');
 var app = express();
 var tasks = [];
 var request = require('request');
+var serveIndex = require('serve-index');
 var videoBase = process.argv[process.argv.length-1];
 
 if (videoBase!="windshield") {
@@ -21,6 +22,8 @@ if (videoBase!="windshield") {
 
 console.log("Video Playback & Storage Path:", videoBase);
 
+app.use('/', serveIndex(videoBase, {'icons': true,'template':'./html/directory.html','view': 'details'}))
+app.use(express.static(videoBase));
 app.use(express.static(path.join(__dirname, 'html')));
 app.use('/videos', express.static('videos'));
 
@@ -34,14 +37,14 @@ var proc = ffmpeg(videoSource)
     console.log('Spawned Ffmpeg with command: ' + commandLine);
   })
   .on('progress', function(progress) {
-    console.log('Processing: ' + progress.percent + '% done');
+    console.log(path.basename(videoSource) +' Processing: ' + parseFloat(progress.percent).toFixed(2) + '% done');
   })
   .on('error', function(err, stdout, stderr) {
     console.log('Cannot process video: ' + err.message);
   })
   .on('end', function() {
 	res.end();
-	console.log('Transcoding succeeded !');
+	console.log('Transcoding Complete!');
   })
   .videoCodec('libx264')
   .audioBitrate('96k')
@@ -49,7 +52,7 @@ var proc = ffmpeg(videoSource)
 	"-movflags frag_keyframe+faststart",
 	'-tune zerolatency',
 	'-threads 0',
-	'-preset ultrafast',
+	'-preset fast',
 	'-g 9',
 	'-b '+ req.params.kbps +'k',
 	'-async 0',
@@ -74,14 +77,14 @@ var proc = ffmpeg()
     console.log('Spawned Ffmpeg with command: ' + commandLine);
   })
   .on('progress', function(progress) {
-    console.log('Processing: ' + progress.percent + '% done');
+    console.log(path.basename(videoSource) +' Processing: ' + parseFloat(progress.percent).toFixed(2) + '% done');
   })
   .on('error', function(err, stdout, stderr) {
     console.log('Cannot process video: ' + err.message);
   })
   .on('end', function() {
 	res.end();
-	console.log('Transcoding succeeded !');
+	console.log('Transcoding Complete!');
   })
   .videoCodec('libx264')
   .audioBitrate('96k')
@@ -109,14 +112,14 @@ var proc = ffmpeg()
     console.log('Spawned Ffmpeg with command: ' + commandLine);
   })
   .on('progress', function(progress) {
-    console.log('Processing: ' + progress.percent + '% done');
+    console.log(path.basename(videoSource) +' Processing: ' + parseFloat(progress.percent).toFixed(2) + '% done');
   })
   .on('error', function(err, stdout, stderr) {
     console.log('Cannot process video: ' + err.message);
   })
   .on('end', function() {
 	res.end();
-	console.log('Transcoding succeeded !');
+	console.log('Transcoding Complete!');
   })
   .videoCodec('libx264')
   .audioBitrate('96k')
@@ -142,14 +145,14 @@ var proc = ffmpeg(videoSource)
     console.log('Spawned Ffmpeg with command: ' + commandLine);
   })
   .on('progress', function(progress) {
-    console.log('Processing: ' + progress.percent + '% done');
+    console.log(path.basename(videoSource) +' Processing: ' + parseFloat(progress.percent).toFixed(2) + '% done');
   })
   .on('error', function(err, stdout, stderr) {
     console.log('Cannot process video: ' + err.message);
   })
   .on('end', function() {
 	res.end();
-	console.log('Transcoding succeeded !');
+	console.log('Transcoding Complete!');
   })
   .videoCodec('libx264')
   .audioBitrate('96k')
@@ -175,20 +178,28 @@ var proc = ffmpeg(videoSource)
   .on('start', function(commandLine) {
     console.log('Spawned Ffmpeg with command: ' + commandLine);
   })
+  .on('codecData', function(data) {
+    console.log('Input is ' + data.audio + ' audio ' +
+      'with ' + data.video + ' video');
+  })
   .on('progress', function(progress) {
-    console.log('Processing: ' + progress.percent + '% done');
+    console.log(path.basename(videoSource) +' Processing: ' + parseFloat(progress.percent).toFixed(2) + '% done');
+    broadcasting = true;
   })
   .on('error', function(err, stdout, stderr) {
     console.log('Cannot process video: ' + err.message);
+    broadcasting = false;
   })
   .on('end', function() {
 	res.end();
-	console.log('Transcoding succeeded !');
+        broadcasting = false;
+	console.log('Transcoding Complete!');
   })
   .videoCodec('libx264')
   .audioBitrate('96k')
   .addOptions([
 	"-movflags frag_keyframe+faststart",
+  '-preset veryfast',
 	'-tune zerolatency',
 	'-threads 0',
 	'-g 9',
@@ -218,3 +229,4 @@ var ffmpeg = require('fluent-ffmpeg');
 });
 
 app.listen(40);
+console.log("Windshield listening on port http://localhost:40");
